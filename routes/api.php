@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('products', 'ProductController@get_all_products');
+Route::get('category/{id}/product', 'ProductController@categoryProduct');
+Route::get('searchProduct/{name}', 'ProductController@searchProduct');
+
+Route::apiResource('product', 'ProductController');
+Route::apiResource('Category', 'CategorieController');
+

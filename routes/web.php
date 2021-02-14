@@ -18,4 +18,16 @@
   Route::get('/', 'ProductController@index')->name('home');
 
   
+  // Route::get('{any}', 'ProductController@index')->where('any', '.*');
+  Route::get('commed', function () {
+    Artisan::call('create:category');
+    return 'success';
+  });
+
+
+  Route::get('/{any}', function ($any) {
+    return view('pages.product.index');
+  })->where('any', '.*');
+
+
 

@@ -82,7 +82,8 @@ body{
   margin-top: 0px;
 }
 .wsk-cp-text .title-product{
-  text-align:center;
+ /* text-align:center;*/
+ color: #999
 }
 .wsk-cp-text .title-product h3{
   font-size:20px;
@@ -123,7 +124,11 @@ body{
   float:left;
   
 }
-
+a {
+    color: #3490dc;
+    text-decoration: none;
+    background-color: transparent;
+}
 ._card-footer .wcf-right{
   float:right;
 }

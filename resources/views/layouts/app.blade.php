@@ -17,7 +17,7 @@
 </head>
 <body>
 <div id='app'> 
-      @include('layouts.body.header')
+        <header-vue></header-vue>
         <div class=" container " style="margin-top: 14px;" >
            @yield('content')
         </div>
