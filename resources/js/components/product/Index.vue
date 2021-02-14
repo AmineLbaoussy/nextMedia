@@ -126,7 +126,6 @@
           getPriducts(){
             axios.get('/api/products')
             .then(res=> {
-                console.log(res.data)
                 this.products= res.data;
                 this.paginationProducts= res.data;
                 this.oldproduct= res.data;
@@ -135,15 +134,12 @@
             .then(err=> console.log(err))
           },
            onChangePage(products) {
-            console.log(products)
-            // update page of items
             this.products = products;
           },
           DB_searchProductFilter(query){
 
             axios.get('/api/searchProduct/'+query)
             .then(res=> {
-                console.log(res.data)
                 this.isSearch=true;
                 this.products= res.data;
             })
@@ -151,8 +147,7 @@
 
           },
           searchProductFilter(query){
-                this.products =this.oldproduct.filter(product => {
-                   console.log(query)     
+                this.products =this.oldproduct.filter(product => {   
                             return product.name.toLowerCase().includes(query.toLowerCase())
                 });
                  this.paginationProducts =this.products;

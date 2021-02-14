@@ -16,15 +16,35 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        //$Categories=Categorie::has('Product')->get();
-           $Categories=Categorie::all();
-           foreach ($Categories as $Categorie) {
-             $count = Product::where('category_id', $Categorie->id)->count();
-             $Categorie -> setAttribute('count',$count)  ;
-           }
-        return response()->json($Categories);
-       
+
+        $Categories=Categorie::where('category_id','=',0)
+               ->with('sub_category')
+               ->whereHas('sub_category')
+               ->withCount('sub_category')
+               ->withCount('Product')
+               ->get();
+        foreach ($Categories as $caty) {
+            foreach ($caty->sub_category as $sub) {
+                $sub -> setAttribute('count_sub',Product::where('category_id', $sub->id)->count())  ;
+            }    
+        }
+        return response()->json($Categories);       
     }
+
+
+
+
+    public function get_subcCategorie()
+    {
+        $Categories=Categorie::where('category_id','!=',0)->get();
+        return response()->json($Categories);       
+    }
+
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.

@@ -22,26 +22,26 @@
           </div>
         </div>
         <div class="form-group">
-     <div class="row">
-        <div class="col-md-5">
-           <label class="control-label col-sm-12" for="price">Price:</label>
-            <div class="col-sm-12">          
-                <input type="text" class="form-control" v-model="price" name="price">
-                <span style="color: red">{{err_price}}</span>
-            </div>
-        </div>
-        <div class="col-md-5">
-          <label class="control-label col-sm-12" for="category">category:</label>
-          <div class="col-sm-12">
-            <select class="form-control" v-model="category"  name="category">
-              <option value="0" disabled selected="">choose category</option>
-              <option :value="item.id" v-for="item in categoryFull" :key="item.id">{{item.name}}</option>
-            </select>
-            <span style="color: red">{{err_category}}</span>
-          </div>
-        </div>
-     </div>
-</div>
+             <div class="row">
+                <div class="col-md-5">
+                   <label class="control-label col-sm-12" for="price">Price:</label>
+                    <div class="col-sm-12">          
+                        <input type="text" class="form-control" v-model="price" name="price">
+                        <span style="color: red">{{err_price}}</span>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                  <label class="control-label col-sm-12" for="category">category:</label>
+                  <div class="col-sm-12">
+                    <select class="form-control" v-model="category"  name="category">
+                      <option value="0" disabled selected="">choose category</option>
+                      <option :value="item.id" v-for="item in categoryFull" :key="item.id">{{item.name}}</option>
+                    </select>
+                    <span style="color: red">{{err_category}}</span>
+                  </div>
+                </div>
+             </div>
+      </div>
 
 
         <div class="form-group">
@@ -85,8 +85,9 @@
         },
         methods:{
           getCategories(){
-            axios.get('/api/Category')
+            axios.get('/api/get_subcCategorie')
             .then(res=> {
+              console.log(res.data)
                 this.categoryFull= res.data;
             })
             .then(err=> console.log(err))

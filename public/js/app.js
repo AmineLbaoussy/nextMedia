@@ -2018,6 +2018,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2033,7 +2042,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/api/Category').then(function (res) {
-        console.log('categories');
+        console.log(res.data);
         _this.categories = res.data;
       }).then(function (err) {
         return console.log(err);
@@ -2175,7 +2184,6 @@ var customLabels = {
       var _this = this;
 
       axios.get('/api/products').then(function (res) {
-        console.log(res.data);
         _this.products = res.data;
         _this.paginationProducts = res.data;
         _this.oldproduct = res.data;
@@ -2184,15 +2192,12 @@ var customLabels = {
       });
     },
     onChangePage: function onChangePage(products) {
-      console.log(products); // update page of items
-
       this.products = products;
     },
     DB_searchProductFilter: function DB_searchProductFilter(query) {
       var _this2 = this;
 
       axios.get('/api/searchProduct/' + query).then(function (res) {
-        console.log(res.data);
         _this2.isSearch = true;
         _this2.products = res.data;
       }).then(function (err) {
@@ -2201,7 +2206,6 @@ var customLabels = {
     },
     searchProductFilter: function searchProductFilter(query) {
       this.products = this.oldproduct.filter(function (product) {
-        console.log(query);
         return product.name.toLowerCase().includes(query.toLowerCase());
       });
       this.paginationProducts = this.products;
@@ -2311,11 +2315,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Categories_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Categories.vue */ "./resources/js/components/product/Categories.vue");
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2589,7 +2588,8 @@ __webpack_require__.r(__webpack_exports__);
     getCategories: function getCategories() {
       var _this = this;
 
-      axios.get('/api/Category').then(function (res) {
+      axios.get('/api/get_subcCategorie').then(function (res) {
+        console.log(res.data);
         _this.categoryFull = res.data;
       }).then(function (err) {
         return console.log(err);
@@ -38420,24 +38420,49 @@ var render = function() {
                 "ul",
                 { staticClass: "list-unstyled mb-0" },
                 _vm._l(_vm.categories, function(item) {
-                  return _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/category/" + item.id + "/product" } },
-                        [
-                          _c("span", [
-                            _vm._v(_vm._s(item.name) + "  "),
-                            _c("span", { staticStyle: { color: "#000" } }, [
-                              _vm._v(" (" + _vm._s(item.count) + ")")
-                            ])
-                          ])
-                        ]
-                      )
-                    ],
-                    1
-                  )
+                  return _c("li", [
+                    _c("span", [
+                      _vm._v(_vm._s(item.name) + "  "),
+                      _c("span", { staticStyle: { color: "#000" } }, [
+                        _vm._v(" (" + _vm._s(item.sub_category_count) + ")")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      _vm._l(item.sub_category, function(sub_item) {
+                        return _c(
+                          "li",
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  to: "/category/" + sub_item.id + "/product"
+                                }
+                              },
+                              [
+                                _c("span", [
+                                  _vm._v(_vm._s(sub_item.name) + "  "),
+                                  _c(
+                                    "span",
+                                    { staticStyle: { color: "#000" } },
+                                    [
+                                      _vm._v(
+                                        " (" + _vm._s(sub_item.count_sub) + ")"
+                                      )
+                                    ]
+                                  )
+                                ])
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      }),
+                      0
+                    )
+                  ])
                 }),
                 0
               )

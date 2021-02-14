@@ -39,7 +39,7 @@ class deletecategory extends Command
      */
     public function handle()
     {
-        $Categories = Categorie::all();
+        $Categories = Categorie::where('category_id','!=',0)->get();
         foreach ($Categories as $Cat) {
              $this->info( 'ID  => '. $Cat->id  .'| Name => '.$Cat->name);
         }

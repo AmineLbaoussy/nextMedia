@@ -6,9 +6,18 @@
                 <div class="col-lg-11">
                   <ul class="list-unstyled mb-0" v-if="categories.length >0">
                     <li v-for="item in categories">
-                       <router-link :to="`/category/${item.id}/product`" > 
-                         <span>{{item.name}}  <span style="color: #000"> ({{item.count}})</span></span>
-                     </router-link>
+                      
+                         <span>{{item.name}}  <span style="color: #000"> ({{item.sub_category_count}})</span></span>
+                    
+                        <ul>
+                          <li v-for="sub_item in item.sub_category">
+                             <router-link :to="`/category/${sub_item.id}/product`" > 
+                                 <span>{{sub_item.name}}  <span style="color: #000"> ({{sub_item.count_sub}})</span></span>
+                             </router-link>
+                         </li>
+                        </ul>
+
+
                     </li>
                   </ul>
                 </div>
@@ -34,7 +43,7 @@
           getCategories(){
             axios.get('/api/Category')
             .then(res=> {
-                console.log('categories')
+                console.log(res.data)
                 this.categories= res.data;
             })
             .then(err=> console.log(err))

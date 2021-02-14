@@ -41,7 +41,7 @@ class createProdcuit extends Command
     {
         $name = $this->ask('Product Name');
         $price = $this->ask('price');
-        $Categories=Categorie::all();
+        $Categories=Categorie::where('category_id','!=',0)->get();
         foreach ($Categories as $Cat) {
              $this->info( 'ID  => '. $Cat->id  .'| Name => '.$Cat->name);
         }

@@ -40,12 +40,31 @@ class createCategory extends Command
     public function handle()
     {  // $category =$this->argument('cat');
 
+        $category_id='';
+        $Categories = Categorie::where('category_id','=',0)->get();
         $name = $this->ask('category name ');
+        //$this->info("Is this the category parent y/n");
+        
+         $parent = $this->ask('Is this the category parent y/n');
+          if (strtolower($parent) == 'y') {
+             $category_id=0;
+          }
+          else{
+                foreach ($Categories as $Cat) {
+                     $this->info( 'ID  => '. $Cat->id  .'| Name => '.$Cat->name);
+                }
+                $this->info('Enter ID for category that you want to delete');
+                $category_id = $this->ask('ID');
+           
+          }
+
         // Validate input data
         $validator = Validator::make([
             'name' => $name,
+            'category_id' => $category_id,
         ], [
             'name' => ['required'],
+            'category_id' => ['required','integer'],
            
         ]);
 
@@ -58,10 +77,12 @@ class createCategory extends Command
         }
                     $Categorie = new Categorie(); 
                     $Categorie->name = $name;
+                    $Categorie->category_id = $category_id;
                     $Categorie->save();
 
         $this->info('category has been created!');
         return true;
+
 
         
     }

@@ -25,5 +25,9 @@ class Categorie extends Model
     	return $this->hasMany(Product::class,'category_id','id');
     }
 
+    public function sub_category(){
+        return $this->hasMany(Categorie::class,'category_id','id');
+    }
+
 
 }
