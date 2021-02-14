@@ -31,19 +31,11 @@ class CategorieController extends Controller
         return response()->json($Categories);       
     }
 
-
-
-
     public function get_subcCategorie()
     {
         $Categories=Categorie::where('category_id','!=',0)->get();
         return response()->json($Categories);       
     }
-
-
-
-
-
 
 
     /**

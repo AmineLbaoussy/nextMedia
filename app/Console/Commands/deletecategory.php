@@ -39,17 +39,32 @@ class deletecategory extends Command
      */
     public function handle()
     {
-        $Categories = Categorie::where('category_id','!=',0)->get();
-        foreach ($Categories as $Cat) {
-             $this->info( 'ID  => '. $Cat->id  .'| Name => '.$Cat->name);
-        }
-        $this->info('Enter ID for category that you want to delete');
+       $id=0;
 
-         $id = $this->ask('ID');
+
+         $parent = $this->ask('De you want to delete category parent y/n');
+          if (strtolower($parent) == 'y') {
+             $Categories = Categorie::where('category_id','=',0)->get();
+             foreach ($Categories as $Cat) {
+                     $this->info( 'ID  => '. $Cat->id  .'| Name => '.$Cat->name);
+             }
+             $this->info('Enter ID for category that you want to delete');
+             $id = $this->ask('ID');
+          }
+          else{
+             $Categories = Categorie::where('category_id','!=',0)->get();
+                foreach ($Categories as $Cat) {
+                     $this->info( 'ID  => '. $Cat->id  .'| Name => '.$Cat->name);
+                }
+                $this->info('Enter ID for category that you want to delete');
+                $id = $this->ask('ID');
+           
+          }
 
         $line =Categorie::find($id);
         if (!empty( $line)) {
            $line->Product()->delete();
+           $line->sub_category()->delete();
            $line->delete();
            $this->info('Category has been deleted');
         }
