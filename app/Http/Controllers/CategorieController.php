@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Model\Categorie;
+use App\Model\Product;
+
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -15,8 +17,11 @@ class CategorieController extends Controller
     public function index()
     {
         //$Categories=Categorie::has('Product')->get();
-         $Categories=Categorie::all();
-
+           $Categories=Categorie::all();
+           foreach ($Categories as $Categorie) {
+             $count = Product::where('category_id', $Categorie->id)->count();
+             $Categorie -> setAttribute('count',$count)  ;
+           }
         return response()->json($Categories);
        
     }

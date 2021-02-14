@@ -7,7 +7,7 @@
                   <ul class="list-unstyled mb-0" v-if="categories.length >0">
                     <li v-for="item in categories">
                        <router-link :to="`/category/${item.id}/product`" > 
-                         <span >{{item.name}} </span>
+                         <span>{{item.name}}  <span style="color: #000"> ({{item.count}})</span></span>
                      </router-link>
                     </li>
                   </ul>
@@ -23,7 +23,7 @@
 
       data(){
             return {
-                categories:[],
+                categories:[], 
             }
          },
         created() {

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\productRequest;
 use App\Traits\MediaUploadTrait;
+
 class ProductController extends Controller
 {
     /**
@@ -143,21 +144,16 @@ class ProductController extends Controller
     }
 
 
-public function categoryProduct($id)
+public function categorie_product($id)
 {
-     // $category= Categorie::where('id',$id)->first();
-     // $products= Product::whereCategoryId($category->id)->get();
-     // foreach ($products as $product) {
-     //        $product -> setAttribute('category_count',$product->category->count());
-     // }
-
-       $products=Product::where('category_id','=', $id)->with('category')->get();
-     
-       // $products=Product::latest()->with('category')->get();
-       foreach ($products as $product) {
-            $product -> setAttribute('date_Add',$product->created_at->diffForHumans())  ;
-       }
-       return response()->json($products); 
+        $Categorie = Categorie::with('Product')->find($id);
+        $Categorie -> setAttribute('_count',Product::where('category_id', $id)->count());
+        foreach ($Categorie->product as $product) {
+                $product -> setAttribute('_date',$product->created_at->diffForHumans())  ;
+        }
+        return response()->json([
+            'Categorie' => $Categorie
+        ], 200);
 }
 
 

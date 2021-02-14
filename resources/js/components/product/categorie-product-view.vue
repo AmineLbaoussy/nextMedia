@@ -2,11 +2,21 @@
    <div>
     <div class="row">
 
-          <div class="col-md-12">
-            searching Products ..
+          
+             <!-- {{categorie_name}} -->
+ 
+         
 
-          </div>          
+
+
+
+         
           <div class="col-md-8">
+             <div class="row">
+              <div class="col-md-12">
+                    <p>Found <strong>{{categorie_count}} </strong>  responses in "{{categorie_name}}"</p>
+                </div>                
+             </div>
               <div class="row">
                   <div class="col-md-4"  v-for="item in products" :key="item.id">
                     <div class="wsk-cp-product">
@@ -67,7 +77,7 @@
 
 
         <div class="_card-footer pb-0 pt-3">
-            <jw-pagination :maxPages=3 :pageSize=4 :items="paginationProducts" @changePage="onChangePage" :labels="customLabels"></jw-pagination>
+            <jw-pagination :maxPages=3 :pageSize=6 :items="paginationProducts" @changePage="onChangePage" :labels="customLabels"></jw-pagination>
         </div>
 
 
@@ -96,7 +106,9 @@
                 searchProduct:'',
                 searchmin:'',
                 searchmax:'',
-                isSearch:false
+                isSearch:false,
+                categorie_name:'',
+                categorie_count:'',
             }
          },
          components:{
@@ -110,14 +122,11 @@
                   this.searchProductFilter(query);
                   this.searchProductFilterMaxMin();
             },              
-            searchmin(){
-                         
+            searchmin(){    
                  this.searchProductFilter(this.searchProduct);
                  this.searchProductFilterMaxMin()
-                 
             },              
             searchmax(){
-
                  this.searchProductFilter(this.searchProduct);
                  this.searchProductFilterMaxMin()
                  
@@ -131,27 +140,20 @@
           getPriducts(){
             axios.get('/api/category/'+this.$route.params.id+'/product')
             .then(res=> {
-                this.products= res.data;
-                this.paginationProducts= res.data;
-                this.oldproduct= res.data;
-
+              console.log(res)
+                this.products= res.data.Categorie.product;
+                this.paginationProducts= res.data.Categorie.product;
+                this.oldproduct= res.data.Categorie.product;
+                this.categorie_name=res.data.Categorie.name;
+                this.categorie_count=res.data.Categorie._count;
             })
             .then(err=> console.log(err))
           },
-           onChangePage(products) {
+          onChangePage(products) {
             this.products = products;
           },
-          // DB_searchProductFilter(query){
-          //   axios.get('/api/searchProduct/'+query)
-          //   .then(res=> {
-          //       this.isSearch=true;
-          //       this.products= res.data;
-          //   })
-          //   .then(err=> console.log(err))  
-          // },
           searchProductFilter(query){
-                this.products =this.oldproduct.filter(product => {
-                   console.log(query)     
+                this.products =this.oldproduct.filter(product => {   
                             return product.name.toLowerCase().includes(query.toLowerCase())
                 });
                  this.paginationProducts =this.products;

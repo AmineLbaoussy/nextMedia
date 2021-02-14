@@ -2390,6 +2390,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var customLabels = {
   first: '<<',
@@ -2407,7 +2417,9 @@ var customLabels = {
       searchProduct: '',
       searchmin: '',
       searchmax: '',
-      isSearch: false
+      isSearch: false,
+      categorie_name: '',
+      categorie_count: ''
     };
   },
   components: {
@@ -2438,9 +2450,12 @@ var customLabels = {
       var _this = this;
 
       axios.get('/api/category/' + this.$route.params.id + '/product').then(function (res) {
-        _this.products = res.data;
-        _this.paginationProducts = res.data;
-        _this.oldproduct = res.data;
+        console.log(res);
+        _this.products = res.data.Categorie.product;
+        _this.paginationProducts = res.data.Categorie.product;
+        _this.oldproduct = res.data.Categorie.product;
+        _this.categorie_name = res.data.Categorie.name;
+        _this.categorie_count = res.data.Categorie._count;
       }).then(function (err) {
         return console.log(err);
       });
@@ -2448,17 +2463,8 @@ var customLabels = {
     onChangePage: function onChangePage(products) {
       this.products = products;
     },
-    // DB_searchProductFilter(query){
-    //   axios.get('/api/searchProduct/'+query)
-    //   .then(res=> {
-    //       this.isSearch=true;
-    //       this.products= res.data;
-    //   })
-    //   .then(err=> console.log(err))  
-    // },
     searchProductFilter: function searchProductFilter(query) {
       this.products = this.oldproduct.filter(function (product) {
-        console.log(query);
         return product.name.toLowerCase().includes(query.toLowerCase());
       });
       this.paginationProducts = this.products;
@@ -38420,7 +38426,14 @@ var render = function() {
                       _c(
                         "router-link",
                         { attrs: { to: "/category/" + item.id + "/product" } },
-                        [_c("span", [_vm._v(_vm._s(item.name) + " ")])]
+                        [
+                          _c("span", [
+                            _vm._v(_vm._s(item.name) + "  "),
+                            _c("span", { staticStyle: { color: "#000" } }, [
+                              _vm._v(" (" + _vm._s(item.count) + ")")
+                            ])
+                          ])
+                        ]
                       )
                     ],
                     1
@@ -38730,11 +38743,17 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _vm._v("\n            searching Products ..\n\n          ")
-      ]),
-      _vm._v(" "),
       _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("p", [
+              _vm._v("Found "),
+              _c("strong", [_vm._v(_vm._s(_vm.categorie_count) + " ")]),
+              _vm._v('  responses in "' + _vm._s(_vm.categorie_name) + '"')
+            ])
+          ])
+        ]),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "row" },
@@ -38885,7 +38904,7 @@ var render = function() {
           _c("jw-pagination", {
             attrs: {
               maxPages: 3,
-              pageSize: 4,
+              pageSize: 6,
               items: _vm.paginationProducts,
               labels: _vm.customLabels
             },
