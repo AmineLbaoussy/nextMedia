@@ -26,6 +26,13 @@
     export default {
         mounted() {
             console.log('Component mounted.')
-        }
+        },
+         components:{
+          
+            baseUrl(){
+                return window.Laravel.baseUrl
+            }
+         }
+
     }
 </script>

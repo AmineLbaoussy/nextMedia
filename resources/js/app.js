@@ -18,10 +18,12 @@ import JwPagination from 'jw-vue-pagination';
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
+Vue.config.baseurl = process.env.BASE_URL
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('header-vue', require('./components/layouts/Header.vue').default);
 Vue.component('home', require('./components/Home.vue').default);
+Vue.component('Product', require('./components/product/Index.vue').default);
+
 //Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('jw-pagination', JwPagination);
 /**
@@ -32,5 +34,7 @@ Vue.component('jw-pagination', JwPagination);
 import router from './routes/routes';
 const app = new Vue({
     el: '#app',
-    router 
+    router ,
+  
+
 });

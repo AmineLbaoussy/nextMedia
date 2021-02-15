@@ -10,6 +10,7 @@ import create_product from '../components/product/create-product.vue';
 
 
 const router = new VueRouter({
+	base:'/',
     mode: 'history',
     hashbang:false,
     routes: [

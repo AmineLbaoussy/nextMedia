@@ -41,7 +41,7 @@
         },
         methods:{
           getCategories(){
-            axios.get('/api/Category')
+            axios.get(window.axios.defaults.baseURL+'/api/Category')
             .then(res=> {
                 console.log(res.data)
                 this.categories= res.data;

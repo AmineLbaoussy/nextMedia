@@ -6,6 +6,7 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
+
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
@@ -21,8 +22,10 @@ try {
 
 window.axios = require('axios');
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+//window.axios.defaults.baseURL = document.head.querySelector('meta[name="api-base-url"]').content;
+window.axios.defaults.baseURL = laravel.baseURL;
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just

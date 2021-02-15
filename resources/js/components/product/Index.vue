@@ -6,6 +6,8 @@
                   <div class="col-md-4"  v-for="item in products" :key="item.id">
                     <div class="wsk-cp-product">
                       <div class="wsk-cp-img">
+                       <!--  /nextMedia/public/ -->
+                       <!--  <img :src="image_src+'/img/products/'+item.image"  alt="Product" class="img-responsive" /> -->
                         <img :src="'/img/products/'+item.image"  alt="Product" class="img-responsive" />
                       </div>
                       <div class="wsk-cp-text">
@@ -34,6 +36,7 @@
               <h5 class="card-header">Search</h5>
               <div class="card-body">
                 <div class="input-group">
+
                   <input type="text" class="form-control" v-model="searchProduct" placeholder="Search for...">
                 </div>
               </div>
@@ -80,6 +83,7 @@
 
         data(){
             return {
+              image_src: '/nextMedia/public/',
                 customLabels,
                 paginationProducts:[],
                 oldproduct:[],
@@ -91,18 +95,21 @@
             }
          },
          components:{
-          categories
+          categories,
+            baseUrl(){
+                return window.Laravel.baseUrl
+            }
          },
+
+    
+
          watch: {
             searchProduct(query){
                   this.searchProductFilter(query);
                   this.searchProductFilterMaxMin();
-                  // if (query.length > 0) {
-                  //     //console.log(query);
-                  //     //this.DB_searchProductFilter(query);
-                  // }else{
-                  //   //this.products= this.oldproduct;
-                  // }
+                    console.log(window.axios.defaults.baseURL)
+                  //  console.log(baseURL)
+
             },              
             searchmin(){
                          
@@ -124,7 +131,7 @@
         },
         methods:{
           getPriducts(){
-            axios.get('/api/products')
+            axios.get(window.axios.defaults.baseURL+'/api/products')
             .then(res=> {
                 this.products= res.data;
                 this.paginationProducts= res.data;
@@ -138,7 +145,7 @@
           },
           DB_searchProductFilter(query){
 
-            axios.get('/api/searchProduct/'+query)
+            axios.get(window.axios.defaults.baseURL+'/api/searchProduct/'+query)
             .then(res=> {
                 this.isSearch=true;
                 this.products= res.data;

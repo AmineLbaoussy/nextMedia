@@ -1944,6 +1944,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
@@ -1984,6 +1986,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.');
+  },
+  components: {
+    baseUrl: function baseUrl() {
+      return window.Laravel.baseUrl;
+    }
   }
 });
 
@@ -2041,7 +2048,7 @@ __webpack_require__.r(__webpack_exports__);
     getCategories: function getCategories() {
       var _this = this;
 
-      axios.get('/api/Category').then(function (res) {
+      axios.get(window.axios.defaults.baseURL + '/api/Category').then(function (res) {
         console.log(res.data);
         _this.categories = res.data;
       }).then(function (err) {
@@ -2133,6 +2140,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 var customLabels = {
   first: '<<',
@@ -2143,6 +2153,7 @@ var customLabels = {
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      image_src: '/nextMedia/public/',
       customLabels: customLabels,
       paginationProducts: [],
       oldproduct: [],
@@ -2154,17 +2165,16 @@ var customLabels = {
     };
   },
   components: {
-    categories: _Categories_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    categories: _Categories_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    baseUrl: function baseUrl() {
+      return window.Laravel.baseUrl;
+    }
   },
   watch: {
     searchProduct: function searchProduct(query) {
       this.searchProductFilter(query);
-      this.searchProductFilterMaxMin(); // if (query.length > 0) {
-      //     //console.log(query);
-      //     //this.DB_searchProductFilter(query);
-      // }else{
-      //   //this.products= this.oldproduct;
-      // }
+      this.searchProductFilterMaxMin();
+      console.log(window.axios.defaults.baseURL); //  console.log(baseURL)
     },
     searchmin: function searchmin() {
       this.searchProductFilter(this.searchProduct);
@@ -2183,7 +2193,7 @@ var customLabels = {
     getPriducts: function getPriducts() {
       var _this = this;
 
-      axios.get('/api/products').then(function (res) {
+      axios.get(window.axios.defaults.baseURL + '/api/products').then(function (res) {
         _this.products = res.data;
         _this.paginationProducts = res.data;
         _this.oldproduct = res.data;
@@ -2197,7 +2207,7 @@ var customLabels = {
     DB_searchProductFilter: function DB_searchProductFilter(query) {
       var _this2 = this;
 
-      axios.get('/api/searchProduct/' + query).then(function (res) {
+      axios.get(window.axios.defaults.baseURL + '/api/searchProduct/' + query).then(function (res) {
         _this2.isSearch = true;
         _this2.products = res.data;
       }).then(function (err) {
@@ -54539,7 +54549,7 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jw_vue_pagination__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jw-vue-pagination */ "./node_modules/jw-vue-pagination/lib/JwPagination.js");
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var jw_vue_pagination__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jw-vue-pagination */ "./node_modules/jw-vue-pagination/lib/JwPagination.js");
 /* harmony import */ var jw_vue_pagination__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jw_vue_pagination__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _routes_routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes/routes */ "./resources/js/routes/routes.js");
 /**
@@ -54561,9 +54571,11 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+Vue.config.baseurl = process.env.BASE_URL;
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('header-vue', __webpack_require__(/*! ./components/layouts/Header.vue */ "./resources/js/components/layouts/Header.vue")["default"]);
-Vue.component('home', __webpack_require__(/*! ./components/Home.vue */ "./resources/js/components/Home.vue")["default"]); //Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('home', __webpack_require__(/*! ./components/Home.vue */ "./resources/js/components/Home.vue")["default"]);
+Vue.component('Product', __webpack_require__(/*! ./components/product/Index.vue */ "./resources/js/components/product/Index.vue")["default"]); //Vue.component('pagination', require('laravel-vue-pagination'));
 
 Vue.component('jw-pagination', jw_vue_pagination__WEBPACK_IMPORTED_MODULE_0___default.a);
 /**
@@ -54577,6 +54589,7 @@ var app = new Vue({
   el: '#app',
   router: _routes_routes__WEBPACK_IMPORTED_MODULE_1__["default"]
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 
@@ -54608,7 +54621,9 @@ try {
 
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; //window.axios.defaults.baseURL = document.head.querySelector('meta[name="api-base-url"]').content;
+
+window.axios.defaults.baseURL = laravel.baseURL;
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
@@ -55214,6 +55229,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 
 
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
+  base: '/',
   mode: 'history',
   hashbang: false,
   routes: [{
